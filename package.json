@@ -1,0 +1,19 @@
+{
+  "name": "prodbot",
+  "version": "1.0.0",
+  "description": "productive much.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evantzhao/prodbot.git"
+  },
+  "author": "evan zhao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evantzhao/prodbot/issues"
+  },
+  "homepage": "https://github.com/evantzhao/prodbot#readme"
+}
