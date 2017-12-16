@@ -12,7 +12,7 @@ exports.handleMessage = function(sender_psid, received_message) {
 	}
 
 	// Sends the response message
-	callSendAPI(sender_psid, response);
+	exports.callSendAPI(sender_psid, response);
 };
 
 // Handles messaging_postbacks events
