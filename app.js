@@ -22,6 +22,8 @@ exports.handlePostback = function(sender_psid, received_postback) {
 
 // Sends response messages via the Send API
 exports.callSendAPI = function(sender_psid, response) {
+	const request = require('request');
+
 	// Construct the message body
 	let request_body = {
 		"recipient": {
@@ -31,7 +33,7 @@ exports.callSendAPI = function(sender_psid, response) {
 	}
 
 	// Send the HTTP request to the Messenger Platform
-	request({
+	request.request({
 		"uri": "https://graph.facebook.com/v2.6/me/messages",
 		"qs": { "access_token": PAGE_ACCESS_TOKEN },
 		"method": "POST",
