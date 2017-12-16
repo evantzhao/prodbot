@@ -1,6 +1,6 @@
 // Handles messages events
 // Note that psid is the page scoped id. identifies users.
-exports.handleMessage = function(sender_psid, recieved_message) {
+exports.handleMessage = function(sender_psid, received_message) {
 	let response;
 
 	// Check if the message contains text
