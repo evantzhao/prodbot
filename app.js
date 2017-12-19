@@ -2,7 +2,7 @@ const
 	request = require('request'),
 	{Wit, log} = require('node-wit'),
 	mongoose = require('mongoose'),
-	db_uri = process.env.MONGO_DEV,
+	db_uri = process.env.MONGO_URI,
 	client = new Wit({
 		accessToken: process.env.WIT_TOKEN
 		// logger: new log.Logger(log.DEBUG)
