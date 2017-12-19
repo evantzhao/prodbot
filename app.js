@@ -51,6 +51,7 @@ exports.handleMessage = function(sender_psid, received_message) {
 					"text": `You sent the message: "${received_message.text}". Now send me an image!`
 				}
 			}
+			exports.callSendAPI(sender_psid, response);
 		});
 
 	} else if (received_message.attachments) {
@@ -81,10 +82,11 @@ exports.handleMessage = function(sender_psid, received_message) {
 				}
 			}
 		}
+		exports.callSendAPI(sender_psid, response);
 	}
 
 	// Sends the response message
-	exports.callSendAPI(sender_psid, response);
+	// exports.callSendAPI(sender_psid, response);
 };
 
 // Handles messaging_postbacks events
