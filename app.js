@@ -32,6 +32,17 @@ db.once('open', function() {
 // Handles messages events
 // Note that psid is the page scoped id. identifies users.
 exports.handleMessage = function(sender_psid, received_message) {
+	// client.message(received_message, {}).then((data) => {
+	// 		console.log('Message contents: ' + JSON.stringify(data));
+	// 		if (data.entities.intent && data.entities.intent[0].value == "start_standup") {
+	// 			response = {
+	// 				"text": `Beginning standup!`
+	// 			}
+
+	// 			console.log("WE SHOULD START AYYY");
+	// 		}
+	// });
+
 
 	let response;
 
@@ -46,9 +57,18 @@ exports.handleMessage = function(sender_psid, received_message) {
 
 				console.log("WE SHOULD START AYYY");
 			} else {
-				// Create the payload for a basic text message
-				response = {
-					"text": `You sent the message: "${received_message.text}". Now send me an image!`
+				// Filtering for understanding what type of intent is being used.
+				if (data.entities.intent && data.entities.intent[0].value == "blocked") {
+
+				} else if (data.entities.intent && data.entities.intent[0].value == "today") {
+
+				} else if (data.entities.intent && data.entities.intent[0].value == "yesterday") {
+
+				} else {
+					// Create the payload for a basic text message
+					response = {
+						"text": `You sent the message: "${received_message.text}". Now send me an image!`
+					}	
 				}
 			}
 			exports.callSendAPI(sender_psid, response);
