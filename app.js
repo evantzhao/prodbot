@@ -37,11 +37,6 @@ exports.handleMessage = function(sender_psid, received_message) {
 
 	// Check if the message contains text
 	if (received_message.text) {
-
-		response = {
-			"text": `You sent the message: "${received_message.text}". Now send me an image!`
-		}
-
 		client.message(received_message, {}).then((data) => {
 			console.log('Message contents: ' + JSON.stringify(data));
 			if (data.entities.intent && data.entities.intent[0].value == "start_standup") {
