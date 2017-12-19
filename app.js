@@ -2,7 +2,7 @@ const
 	request = require('request'),
 	{Wit, log} = require('node-wit'),
 	mongoose = require('mongoose'),
-	db_uri = process.env.MONGO_URI,
+	db_uri = process.env.MONGO_DEV,
 	client = new Wit({
 		accessToken: process.env.WIT_TOKEN
 		// logger: new log.Logger(log.DEBUG)
@@ -32,13 +32,14 @@ db.once('open', function() {
 // Handles messages events
 // Note that psid is the page scoped id. identifies users.
 exports.handleMessage = function(sender_psid, received_message) {
+
 	let response;
 
 	// Check if the message contains text
-	if (received_message.text) {    
+	if (received_message.text) {
 
 		client.message(received_message, {}).then((data) => {
-			// console.log('Message contents: ' + JSON.stringify(data));
+			console.log('Message contents: ' + JSON.stringify(data));
 			if (data.entities.intent && data.entities.intent[0].value == "start_standup") {
 				response = {
 					"text": `Beginning standup!`
