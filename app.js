@@ -61,8 +61,19 @@ exports.handleMessage = function(sender_psid, received_message) {
 			} else {
 				// Filtering for understanding what type of intent is being used.
 				if (data.entities.intent && data.entities.intent[0].value == "blocked") {
+					var arr = [];
+
+					if (data.entities.reminder) {
+						data.entities.reminder.forEach(function (entry) {
+							arr.push(entry.value);
+						});
+					}
+
+					let temp = arr.join(', ');
+
+
 					response = {
-						"text": `Blocker detected`
+						"text": `Blocked by: ${temp}`
 					}
 				} else if (data.entities.intent && data.entities.intent[0].value == "today") {
 					var arr = [];
@@ -79,8 +90,18 @@ exports.handleMessage = function(sender_psid, received_message) {
 						"text": `Tasks for today are: ${temp}`
 					}
 				} else if (data.entities.intent && data.entities.intent[0].value == "yesterday") {
+					var arr = [];
+
+					if (data.entities.reminder) {
+						data.entities.reminder.forEach(function (entry) {
+							arr.push(entry.value);
+						});
+					}
+
+					let temp = arr.join(', ');
+
 					response = {
-						"text": `Task for yesterday detected`
+						"text": `Yesterday I completed: ${temp}`
 					}
 				} else {
 					// Create the payload for a basic text message
