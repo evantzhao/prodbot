@@ -65,8 +65,18 @@ exports.handleMessage = function(sender_psid, received_message) {
 						"text": `Blocker detected`
 					}
 				} else if (data.entities.intent && data.entities.intent[0].value == "today") {
+					var arr = [];
+
+					if (data.entities.reminders) {
+						data.entities.reminders.forEach(function (entry) {
+							arr.push(entry);
+						});
+					}
+
+					let temp = arr.join(', ');
+
 					response = {
-						"text": `Task for today detected`
+						"text": `Tasks for today are: ${temp}`
 					}
 				} else if (data.entities.intent && data.entities.intent[0].value == "yesterday") {
 					response = {
