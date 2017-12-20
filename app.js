@@ -50,7 +50,7 @@ exports.handleMessage = function(sender_psid, received_message) {
 
 	// Check if the message contains text
 	if (received_message.text) {
-		client.message(received_message, {}).then((data) => {
+		client.message(received_message.text, {}).then((data) => {
 			console.log('Message contents: ' + JSON.stringify(data));
 			if (data.entities.intent && data.entities.intent[0].value == "start_standup") {
 				response = {
