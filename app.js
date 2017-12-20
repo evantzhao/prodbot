@@ -67,8 +67,8 @@ exports.handleMessage = function(sender_psid, received_message) {
 				} else if (data.entities.intent && data.entities.intent[0].value == "today") {
 					var arr = [];
 
-					if (data.entities.reminders) {
-						data.entities.reminders.forEach(function (entry) {
+					if (data.entities.reminder) {
+						data.entities.reminder.forEach(function (entry) {
 							arr.push(entry.value);
 						});
 					}
