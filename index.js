@@ -28,8 +28,8 @@ app.post('/webhook', (req, res) => {
       let webhookEvent = entry.messaging[0];
       console.log(webhookEvent);
 
-      let sender_psid = webhookEvent.sender.id;
-      sender_psid = 1337;
+      // let sender_psid = webhookEvent.sender.id;
+      let sender_psid = 1337;
       console.log("Sender psid: " + sender_psid);
 
 		// Check if the event is a message or postback and
