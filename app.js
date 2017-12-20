@@ -46,6 +46,8 @@ exports.handleMessage = function(sender_psid, received_message) {
 
 	let response;
 
+	console.log(received_message);
+
 	// Check if the message contains text
 	if (received_message.text) {
 		client.message(received_message, {}).then((data) => {
