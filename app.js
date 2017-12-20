@@ -61,11 +61,17 @@ exports.handleMessage = function(sender_psid, received_message) {
 			} else {
 				// Filtering for understanding what type of intent is being used.
 				if (data.entities.intent && data.entities.intent[0].value == "blocked") {
-
+					response = {
+						"text": `Blocker detected`
+					}
 				} else if (data.entities.intent && data.entities.intent[0].value == "today") {
-
+					response = {
+						"text": `Task for today detected`
+					}
 				} else if (data.entities.intent && data.entities.intent[0].value == "yesterday") {
-
+					response = {
+						"text": `Task for yesterday detected`
+					}
 				} else {
 					// Create the payload for a basic text message
 					response = {
