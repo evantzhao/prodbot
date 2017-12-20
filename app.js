@@ -69,7 +69,7 @@ exports.handleMessage = function(sender_psid, received_message) {
 
 					if (data.entities.reminders) {
 						data.entities.reminders.forEach(function (entry) {
-							arr.push(entry);
+							arr.push(entry.value);
 						});
 					}
 
