@@ -50,7 +50,7 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 
 					if (arr.length == 0) {
 						User.update({ psid: psid }, { blockers: "No blockers poop" }, function(err, raw) {
-							if(err) return console.error(err);
+							if(err) console.log(err);
 							response = {
 								"text": `No blockers`
 							}
