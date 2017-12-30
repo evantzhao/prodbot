@@ -66,8 +66,8 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 			} else if (checkEntity(data, "yesterday")) {
 				var arr = [];
 
-				if (data.entities.reminder) {
-					data.entities.reminder.forEach(function (entry) {
+				if (data.entities.agenda_entry) {
+					data.entities.agenda_entry.forEach(function (entry) {
 						arr.push(entry.value);
 					});
 				}
