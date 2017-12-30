@@ -30,7 +30,7 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 				console.log("WE SHOULD START AYYY");
 
 			} else if (checkEntity(data, "previous")) {
-				response = generateTextResponse(`blockers were: ${caller.blockers}`)
+				response = generateTextResponse(`These are what your previous goals were: Blockers: ${caller.blockers}\nYesterday's Goals: ${caller.today}\nAchieved the day before: ${caller.yesterday}`)
 
 			} else if (checkEntity(data, "blocker")) {
 				var arr = [];
@@ -61,6 +61,7 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 
 				let temp = arr.join(', ');
 
+				caller.today = temp;
 				response = generateTextResponse(`Tasks for today are: ${temp}`);
 			} else if (checkEntity(data, "yesterday")) {
 				var arr = [];
@@ -73,10 +74,11 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 
 				let temp = arr.join(', ');
 
+				caller.yesterday = temp;
 				response = generateTextResponse(`Yesterday I completed: ${temp}`);
 			} else {
 				// Create the payload for a basic text message
-				response = generateTextResponse(`You sent the message: "${message.text}". Now send me an image!`);
+				response = generateTextResponse(`You sent the message: "${message.text}". How the hell am I supposed to understand that you fool.`);
 			}
 			caller.save(function(err, updated_user) {
 				if (err) return console.error(err);
