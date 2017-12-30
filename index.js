@@ -5,6 +5,7 @@
 const 
   express = require('express'),
   bodyParser = require('body-parser'),
+  db = require('./db'),	// user, connection
   backend = require('./app'),
   app = express().use(bodyParser.json()); // creates express http server
 
@@ -29,15 +30,15 @@ app.post('/webhook', (req, res) => {
       console.log(webhookEvent);
 
       let sender_psid = webhookEvent.sender.id;
-      // let sender_psid = 1337;
+      // let sender_psid = 1335;
       console.log("Sender psid: " + sender_psid);
 
 		// Check if the event is a message or postback and
 		// pass the event to the appropriate handler function
 		if (webhookEvent.message) {
-			backend.handleMessage(sender_psid, webhookEvent.message);        
+			backend.handleMessage(sender_psid, webhookEvent.message, db.user);
 		} else if (webhookEvent.postback) {
-			backend.handlePostback(sender_psid, webhookEvent.postback);
+			backend.handlePostback(sender_psid, webhookEvent.postback, db.user);
 		}
     });
 

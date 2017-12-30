@@ -1,52 +1,41 @@
 const 
 	request = require('request'),
 	{Wit, log} = require('node-wit'),
-	mongoose = require('mongoose'),
-	db_uri = process.env.MONGO_URI,
 	client = new Wit({
 		accessToken: process.env.WIT_TOKEN
 		// logger: new log.Logger(log.DEBUG)
 	});
 
-mongoose.connect(db_uri);
-let db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-
-db.once('open', function() {
-  // we're connected!
-  console.log("We're connected to the local mongodb");
-
-  // Generate local schema
-	var user_schema = mongoose.Schema({
-		psid: Number,
-		yesterday: [String],
-		today: [String],
-		blockers: [String]
-	});
-
-	var User = mongoose.model('users', user_schema);
-
-});
-
 // Handles messages events
 // Note that psid is the page scoped id. identifies users.
-exports.handleMessage = function(sender_psid, received_message) {
-	let response;
+exports.handleMessage = function(sender_psid, received_message, User) {
+	var callback = function (psid, message, User) {
+		let response;
 
-	console.log(received_message);
-
-	// Check if the message contains text
-	if (received_message.text) {
-		client.message(received_message.text, {}).then((data) => {
+		client.message(message.text, {}).then((data) => {
 			console.log('Message contents: ' + JSON.stringify(data));
 			if (data.entities.intent && data.entities.intent[0].value == "start_standup") {
 				response = {
 					"text": `Beginning standup!`
 				}
-
 				console.log("WE SHOULD START AYYY");
 			} else {
+				if(data.entities.intent && data.entities.intent[0].value == "previous") {
+					var user_query = User.findOne({ psid: sender_psid });
+					user_query.then(function (this_user) {
+						if (!this_user) {
+							response = {
+								"text": "user not found"
+							}
+						} else {
+							console.log(this_user);
+							response = {
+								"text": `blockers were: ${this_user.blockers}`
+							}
+						}
+					});
+					console.log(response);
+				}
 				// Filtering for understanding what type of intent is being used.
 				if (data.entities.intent && data.entities.intent[0].value == "blocker") {
 					var arr = [];
@@ -58,16 +47,22 @@ exports.handleMessage = function(sender_psid, received_message) {
 					}
 
 					if (arr.length == 0) {
+						User.update({ psid: psid }, { blockers: "No blockers poop" }, function(err, raw) {
+							if(err) return console.error(err);
+						});
 						response = {
 							"text": `No blockers`
 						}
 					} else {
+						let all = arr.join(', ');
+						User.update({ psid: psid }, { blockers: all }, function(err, raw) {
+							if(err) return console.error(err);
+						});
 						response = {
-							"text": `Blocked by: ${arr.join(', ')}`
-						}	
+							"text": `Blocked by: ${all}`
+						}
 					}
 
-					
 				} else if (data.entities.intent && data.entities.intent[0].value == "today") {
 					var arr = [];
 
@@ -99,12 +94,31 @@ exports.handleMessage = function(sender_psid, received_message) {
 				} else {
 					// Create the payload for a basic text message
 					response = {
-						"text": `You sent the message: "${received_message.text}". Now send me an image!`
+						"text": `You sent the message: "${message.text}". Now send me an image!`
 					}	
 				}
 			}
-			exports.callSendAPI(sender_psid, response);
+			exports.callSendAPI(psid, response);
 		});
+	}
+
+	// Check if the message contains text
+	if (received_message.text) {
+
+		console.log(received_message.text);
+		callback(sender_psid, received_message, User);
+
+		// var user_query = User.findOne({ psid: sender_psid });
+		// user_query.then(function (this_user) {
+		// 	if (!this_user) {
+		// 		new User({ psid: sender_psid }).save(function(err, user) {
+		// 			if (err) return console.error(err);
+		// 			callback(sender_psid, received_message, user);
+		// 		});
+		// 	} else {
+		// 		callback(sender_psid, received_message, this_user);
+		// 	}
+		// });
 
 	} else if (received_message.attachments) {
 		// Get the URL of the message attachment
@@ -142,7 +156,7 @@ exports.handleMessage = function(sender_psid, received_message) {
 };
 
 // Handles messaging_postbacks events
-exports.handlePostback = function(sender_psid, received_postback) {
+exports.handlePostback = function(sender_psid, received_postback, User) {
 	let response;
 
 	// Get the payload for the postback
