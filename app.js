@@ -32,18 +32,6 @@ db.once('open', function() {
 // Handles messages events
 // Note that psid is the page scoped id. identifies users.
 exports.handleMessage = function(sender_psid, received_message) {
-	// client.message(received_message, {}).then((data) => {
-	// 		console.log('Message contents: ' + JSON.stringify(data));
-	// 		if (data.entities.intent && data.entities.intent[0].value == "start_standup") {
-	// 			response = {
-	// 				"text": `Beginning standup!`
-	// 			}
-
-	// 			console.log("WE SHOULD START AYYY");
-	// 		}
-	// });
-
-
 	let response;
 
 	console.log(received_message);
@@ -60,7 +48,7 @@ exports.handleMessage = function(sender_psid, received_message) {
 				console.log("WE SHOULD START AYYY");
 			} else {
 				// Filtering for understanding what type of intent is being used.
-				if (data.entities.intent && data.entities.intent[0].value == "blocked") {
+				if (data.entities.intent && data.entities.intent[0].value == "blocker") {
 					var arr = [];
 
 					if (data.entities.reminder) {
@@ -69,12 +57,17 @@ exports.handleMessage = function(sender_psid, received_message) {
 						});
 					}
 
-					let temp = arr.join(', ');
-
-
-					response = {
-						"text": `Blocked by: ${temp}`
+					if (arr.length == 0) {
+						response = {
+							"text": `No blockers`
+						}
+					} else {
+						response = {
+							"text": `Blocked by: ${arr.join(', ')}`
+						}	
 					}
+
+					
 				} else if (data.entities.intent && data.entities.intent[0].value == "today") {
 					var arr = [];
 
