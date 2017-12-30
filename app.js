@@ -33,8 +33,10 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 								"text": `blockers were: ${this_user.blockers}`
 							}
 						}
+						console.log(response);
+						exports.callSendAPI(psid, response);
+						return;
 					});
-					console.log(response);
 				}
 				// Filtering for understanding what type of intent is being used.
 				else if (data.entities.intent && data.entities.intent[0].value == "blocker") {
