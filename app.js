@@ -37,7 +37,7 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 					console.log(response);
 				}
 				// Filtering for understanding what type of intent is being used.
-				if (data.entities.intent && data.entities.intent[0].value == "blocker") {
+				else if (data.entities.intent && data.entities.intent[0].value == "blocker") {
 					var arr = [];
 
 					if (data.entities.reminder) {
