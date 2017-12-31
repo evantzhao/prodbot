@@ -27,10 +27,9 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 			if (checkEntity(data, "start_standup")) {
 
 				response = generateTextResponse("Beginning standup!");
-				console.log("WE SHOULD START AYYY");
 
 			} else if (checkEntity(data, "previous")) {
-				response = generateTextResponse(`These are what your previous goals were: Blockers: ${caller.blockers}\nYesterday's Goals: ${caller.today}\nAchieved the day before: ${caller.yesterday}`)
+				response = generateTextResponse(`These are what your previous goals were: Blockers: ${caller.blockers}\n\nYesterday's goals: ${caller.today}\n\nAchieved the day before: ${caller.yesterday}`)
 
 			} else if (checkEntity(data, "blocker")) {
 				var arr = [];
@@ -57,6 +56,10 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 					data.entities.reminder.forEach(function (entry) {
 						arr.push(entry.value);
 					});
+				} else if (data.entities.agenda_entry) {
+					data.entities.agenda_entry.forEach(function (entry) {
+						arr.push(entry.value);
+					});
 				}
 
 				let temp = arr.join(', ');
@@ -68,6 +71,10 @@ exports.handleMessage = function(sender_psid, received_message, User) {
 
 				if (data.entities.agenda_entry) {
 					data.entities.agenda_entry.forEach(function (entry) {
+						arr.push(entry.value);
+					});
+				} else if (data.entities.reminder) {
+					data.entities.reminder.forEach(function (entry) {
 						arr.push(entry.value);
 					});
 				}
